@@ -86,9 +86,7 @@ def get_listing_details(listing_id) -> dict:
     file_path = "html_files/listing_" + listing_id + ".html"
     fout = open(file_path, encoding="utf-8-sig")
     lst = BeautifulSoup(fout, 'html.parser')
-    fout.close()
-
-
+    
 
     policy_number = "Pending"
 
@@ -135,6 +133,20 @@ def get_listing_details(listing_id) -> dict:
 
     #Policy Number
     policy_number = "Pending"
+    #Also helped with this
+    for li in lst.find_all('li'):
+        if 'Policy number' in li.text:
+            span = li.find('span', class_='ll4r2nl')
+            if span:
+                policy_number = span.text.strip().replace('\ufeff', '')
+            else:
+                policy_number = li.text.replace('Policy number:', '').strip()
+            
+            if "pending" in policy_number.lower():
+                policy_number = "Pending"
+            elif "exempt" in policy_number.lower():
+                policy_number = "Exempt"
+            break
 
 
     results[listing_id] = {
