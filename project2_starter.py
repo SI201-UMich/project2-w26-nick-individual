@@ -86,7 +86,7 @@ def get_listing_details(listing_id) -> dict:
     file_path = "html_files/listing_" + listing_id + ".html"
     fout = open(file_path, encoding="utf-8-sig")
     lst = BeautifulSoup(fout, 'html.parser')
-    
+    fout.close()
 
     policy_number = "Pending"
 
@@ -346,8 +346,7 @@ def google_scholar_searcher(query):
     base_url = "https://scholar.google.com/scholar?q="
     full_url = base_url + query
     
-    #Gemini said to add this in, said it acts as a 'bouncer' so Google doesn't block it
-    headers = {'User-Agent': 'Mozilla/5.0'}
+    
     
     response = requests.get(full_url, headers=headers)
     soup = BeautifulSoup(response.text, 'html.parser')
